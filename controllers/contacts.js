@@ -1,7 +1,5 @@
 const { HttpError, ctrlWrapper } = require("../helpers");
-const Contact = require("../models/contact");
-
-// const contacts = require("../models/contacts");
+const { Contact } = require("../models/contact");
 const Joi = require("joi");
 const AddSchema = Joi.object({
   name: Joi.string().required(),
@@ -17,6 +15,8 @@ const UpdateSchema = Joi.object({
 const UpdateFavoriteSchema = Joi.object({
   favorite: Joi.boolean().required(),
 });
+
+// const contacts = require("../models/contacts");
 
 const getAll = async (req, res) => {
   const result = await Contact.find();
