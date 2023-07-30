@@ -29,6 +29,9 @@ const getAll = async (req, res) => {
       limit,
     }
   ).populate("owner", "email");
+  if (result.length < 1) {
+    throw HttpError(404, "Not Found");
+  }
   res.status(200).json(result);
 };
 const getContactById = async (req, res) => {
