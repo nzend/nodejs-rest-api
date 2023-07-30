@@ -21,13 +21,6 @@ const getAll = async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   const skip = (page - 1) * limit;
 
-  if (Object.keys(req.query) < 1) {
-    const result = await Contact.find({ owner }, "-createdAt -updatedAt", {
-      skip,
-      limit,
-    }).populate("owner", "email");
-    res.status(200).json(result);
-  }
   const result = await Contact.find(
     { owner, ...req.query },
     "-createdAt -updatedAt",
