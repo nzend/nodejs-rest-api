@@ -75,15 +75,8 @@ const updateContact = async (req, res) => {
   }
   const { id } = req.params;
   const { _id: owner } = req.user;
-  const contact = (
-    await Contact.find({ owner }, "-createdAt -updatedAt")
-  ).filter((contact) => contact.id === id);
 
-  if (Object.keys(contact).length < 1) {
-    throw HttpError(404, "Not Found");
-  }
-
-  const result = await Contact.findByIdAndUpdate(id, req.body, {
+  const result = await Contact.findOneAndUpdate({ _id: id, owner }, req.body, {
     new: true,
   });
   if (!result) {
@@ -101,14 +94,10 @@ const updateStatusContact = async (req, res) => {
   }
   const { id } = req.params;
   const { _id: owner } = req.user;
-  const contact = (
-    await Contact.find({ owner }, "-createdAt -updatedAt")
-  ).filter((contact) => contact.id === id);
 
-  if (Object.keys(contact).length < 1) {
-    throw HttpError(404, "Not Found");
-  }
-  const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
+  const result = await Contact.findOneAndUpdate({ _id: id, owner }, req.body, {
+    new: true,
+  });
   if (!result) {
     throw HttpError(404, "Not Found");
   }
@@ -117,14 +106,8 @@ const updateStatusContact = async (req, res) => {
 const deleteContact = async (req, res) => {
   const { id } = req.params;
   const { _id: owner } = req.user;
-  const contact = (
-    await Contact.find({ owner }, "-createdAt -updatedAt")
-  ).filter((contact) => contact.id === id);
 
-  if (Object.keys(contact).length < 1) {
-    throw HttpError(404, "Not Found");
-  }
-  const result = await Contact.findByIdAndRemove(id);
+  const result = await Contact.findOneAndRemove({ _id: id, owner });
 
   if (!result) {
     throw HttpError(404, "Not Found");
