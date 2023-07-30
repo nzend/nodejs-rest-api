@@ -18,18 +18,24 @@ const UpdateFavoriteSchema = Joi.object({
 
 const getAll = async (req, res) => {
   const { _id: owner } = req.user;
-  const { page = 1, limit = 10, favorite = false } = req.query;
+  const { page = 1, limit = 10, favorite, email } = req.query;
   const skip = (page - 1) * limit;
-  const filter = { owner };
-  if (favorite !== "false") {
-    filter.favorite = true;
+
+  if (Object.keys(req.query) < 1) {
+    const result = await Contact.find({ owner }, "-createdAt -updatedAt", {
+      skip,
+      limit,
+    }).populate("owner", "email");
+    res.status(200).json(result);
   }
-
-  const result = await Contact.find(filter, "-createdAt -updatedAt", {
-    skip,
-    limit,
-  }).populate("owner", "email");
-
+  const result = await Contact.find(
+    { owner, ...req.query },
+    "-createdAt -updatedAt",
+    {
+      skip,
+      limit,
+    }
+  ).populate("owner", "email");
   res.status(200).json(result);
 };
 const getContactById = async (req, res) => {
