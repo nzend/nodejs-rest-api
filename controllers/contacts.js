@@ -38,8 +38,7 @@ const getContactById = async (req, res) => {
   const { _id: owner } = req.user;
 
   const { id } = req.params;
-  console.log(id);
-  console.log("owner", owner);
+  
 
   const result = await Contact.findOne(
     { $and: [{ _id: id }, { owner }] },
